@@ -84,7 +84,7 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
             ui->comboBoxFontStyle->addItem(style);
         }
         // Try to select the saved style, fall back to "Regular", then first item
-        QString savedStyle = settings->fontStyle();
+        QString savedStyle = this->settings->fontStyle();
         int idx = ui->comboBoxFontStyle->findText(savedStyle);
         if (idx == -1) {
             idx = ui->comboBoxFontStyle->findText(QStringLiteral("Regular"));
@@ -99,15 +99,15 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
 
     // When the user picks a different font family
     connect(ui->comboBoxFont, &QComboBox::currentTextChanged, this, [this, populateFontStyles](const QString &family) {
-        settings->setFontName(family);
+        this->settings->setFontName(family);
         populateFontStyles(family);
         // Update font style setting to the newly selected style
-        settings->setFontStyle(ui->comboBoxFontStyle->currentText());
+        this->settings->setFontStyle(ui->comboBoxFontStyle->currentText());
     });
 
     // When the user picks a different font style
     connect(ui->comboBoxFontStyle, &QComboBox::currentTextChanged, this, [this](const QString &style) {
-        settings->setFontStyle(style);
+        this->settings->setFontStyle(style);
     });
 
     // Two-way bindings: settings → widgets
