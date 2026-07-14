@@ -98,7 +98,7 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     populateFontStyles(settings->fontName());
 
     // When the user picks a different font family
-    connect(ui->comboBoxFont, &QComboBox::currentTextChanged, this, [=](const QString &family) {
+    connect(ui->comboBoxFont, &QComboBox::currentTextChanged, this, [this, populateFontStyles](const QString &family) {
         settings->setFontName(family);
         populateFontStyles(family);
         // Update font style setting to the newly selected style
@@ -106,15 +106,15 @@ PreferencesDialog::PreferencesDialog(ApplicationSettings *settings, QWidget *par
     });
 
     // When the user picks a different font style
-    connect(ui->comboBoxFontStyle, &QComboBox::currentTextChanged, this, [=](const QString &style) {
+    connect(ui->comboBoxFontStyle, &QComboBox::currentTextChanged, this, [this](const QString &style) {
         settings->setFontStyle(style);
     });
 
     // Two-way bindings: settings → widgets
-    connect(settings, &ApplicationSettings::fontNameChanged, this, [=](QString fontName) {
+    connect(settings, &ApplicationSettings::fontNameChanged, this, [this](QString fontName) {
         ui->comboBoxFont->setCurrentText(fontName);
     });
-    connect(settings, &ApplicationSettings::fontStyleChanged, this, [=](QString fontStyle) {
+    connect(settings, &ApplicationSettings::fontStyleChanged, this, [this](QString fontStyle) {
         int idx = ui->comboBoxFontStyle->findText(fontStyle);
         if (idx != -1) {
             ui->comboBoxFontStyle->setCurrentIndex(idx);
